@@ -1,0 +1,501 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../.resources/report.gif" type="image/gif"/><title>StringUtilsTest.java</title><link rel="stylesheet" href="../../../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../.sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">StringUtilsTest (21-Mar-2016 20:02:40)</a> &gt; <a href="../../index.html" class="el_group">ST</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">StringUtilsTest.java</span></div><h1>StringUtilsTest.java</h1><pre class="source lang-java linenums">import org.junit.Test;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
+//import sun.font.TrueTypeFont;
+
+import static org.junit.Assert.*;
+import org.junit.runner.JUnitCore;
+import org.junit.runner.Result;
+import org.junit.runner.notification.Failure;
+/**
+ * Created by s1338673 on 19/03/16.
+ */
+<span class="fc" id="L12">public class StringUtilsTest {</span>
+
+
+    // Normal case, input greater than pattern
+    //categories: input: non empty with one atomic region
+    //pattern: multiple character. present only in atomic region
+    //replace: multiple chars
+    //delimeter: special char
+    @Test
+    public void testitf1() {
+<span class="fc" id="L22">        StringUtils stringutils = new StringUtils();</span>
+<span class="fc" id="L23">        String input = &quot;THIS #IS TEST# CASE&quot;;</span>
+<span class="fc" id="L24">        String pattern = &quot;TE&quot;;</span>
+<span class="fc" id="L25">        String replace = &quot;BE&quot;;</span>
+<span class="fc" id="L26">        char delimiter = '#';</span>
+<span class="fc" id="L27">        boolean inside = true;</span>
+<span class="fc" id="L28">        String output = stringutils.replaceString(input, pattern, replace, delimiter, inside);</span>
+<span class="fc" id="L29">        String expected = &quot;THIS #IS BEST# CASE&quot;;</span>
+        //System.out.print(output);
+<span class="fc" id="L31">        boolean ans = output.equals(expected);</span>
+<span class="fc" id="L32">        assertEquals(ans, true);</span>
+
+<span class="fc" id="L34">    }</span>
+
+
+    //categories: input: non empty with multiple atomic region
+    //pattern single char, present in every region
+    //replace: multiple
+    //delimeter: special char
+    @Test
+    public void testitf4() {
+<span class="fc" id="L43">        StringUtils stringutils = new StringUtils();</span>
+<span class="fc" id="L44">        String input = &quot;THIS #IS# TEST #IS# CASE&quot;;</span>
+<span class="fc" id="L45">        String pattern = &quot;I&quot;;</span>
+<span class="fc" id="L46">        String replace = &quot;XYZ&quot;;</span>
+<span class="fc" id="L47">        char delimiter = '#';</span>
+<span class="fc" id="L48">        boolean inside = true;</span>
+<span class="fc" id="L49">        String output = stringutils.replaceString(input, pattern, replace, delimiter, inside);</span>
+<span class="fc" id="L50">        String expected = &quot;THIS #XYZS# TEST #XYZS# CASE&quot;;</span>
+        //System.out.print(output);
+<span class="fc" id="L52">        boolean ans = output.equals(expected);</span>
+<span class="fc" id="L53">        assertEquals(ans, true);</span>
+
+<span class="fc" id="L55">    }</span>
+
+    //categories: input: non empty, 2 regions
+    //pattern: single char, only in one region
+    //replace: multiple
+    //delimeter: special char
+    //pattern and input are same
+
+    @Test
+    public void testitf6() {
+<span class="fc" id="L65">        StringUtils stringutils = new StringUtils();</span>
+<span class="fc" id="L66">        String input = &quot;THIS #IS# TEST #THE# CASE&quot;;</span>
+<span class="fc" id="L67">        String pattern = &quot;I&quot;;</span>
+<span class="fc" id="L68">        String replace = &quot;XYZ&quot;;</span>
+<span class="fc" id="L69">        char delimiter = '#';</span>
+<span class="fc" id="L70">        boolean inside = true;</span>
+<span class="fc" id="L71">        String output = stringutils.replaceString(input, pattern, replace, delimiter, inside);</span>
+<span class="fc" id="L72">        String expected = &quot;THIS #XYZS# TEST #THE# CASE&quot;;</span>
+        //System.out.print(output);
+<span class="fc" id="L74">        boolean ans = output.equals(expected);</span>
+<span class="fc" id="L75">        assertEquals(ans, true);</span>
+
+<span class="fc" id="L77">    }</span>
+
+    //categories: input: non empty
+    //pattern: same as input
+    //replace: multiple
+    //delimeter: special char
+    //pattern and input are same
+    @Test
+    public void testitf7() {
+<span class="fc" id="L86">        StringUtils stringutils = new StringUtils();</span>
+<span class="fc" id="L87">        String input = &quot;#TEST#&quot;;</span>
+<span class="fc" id="L88">        String pattern = &quot;TEST&quot;;</span>
+<span class="fc" id="L89">        String replace = &quot;Asdf&quot;;</span>
+<span class="fc" id="L90">        char delimiter = '#';</span>
+<span class="fc" id="L91">        boolean inside = true;</span>
+<span class="fc" id="L92">        String output = stringutils.replaceString(input, pattern, replace, delimiter, inside);</span>
+<span class="fc" id="L93">        String expected = &quot;#Asdf#&quot;;</span>
+        //System.out.print(output);
+<span class="fc" id="L95">        boolean ans = output.equals(expected);</span>
+<span class="fc" id="L96">        assertEquals(ans, true);</span>
+
+<span class="fc" id="L98">    }</span>
+
+    //categories: input: non empty
+    //pattern: multiple chars, present in input
+    //replace: empty
+    //delimeter: special char
+    //Replace is empty string
+    @Test
+    public void testitf8() {
+<span class="fc" id="L107">        StringUtils stringutils = new StringUtils();</span>
+<span class="fc" id="L108">        String input = &quot;THIS #TEST# CASE&quot;;</span>
+<span class="fc" id="L109">        String pattern = &quot;TE&quot;;</span>
+<span class="fc" id="L110">        String replace = &quot;&quot;;</span>
+<span class="fc" id="L111">        char delimiter = '#';</span>
+<span class="fc" id="L112">        boolean inside = true;</span>
+<span class="fc" id="L113">        String output = stringutils.replaceString(input, pattern, replace, delimiter, inside);</span>
+<span class="fc" id="L114">        String expected = &quot;THIS #ST# CASE&quot;;</span>
+<span class="fc" id="L115">        boolean ans = output.equals(expected);</span>
+<span class="fc" id="L116">        assertEquals(ans, true);</span>
+
+<span class="fc" id="L118">    }</span>
+
+    //categories: input: non empty
+    //pattern: multiple chars, present in input
+    //replace: multiple
+    //delimeter: escape char
+    //Backslash is the delimiter, search and replace within atomic region. SPEC 5
+    @Test
+    public void testitf9() {
+<span class="fc" id="L127">        StringUtils stringutils = new StringUtils();</span>
+<span class="fc" id="L128">        String input = &quot;\\#THIS #TEST# CASE\\#&quot;;</span>
+<span class="fc" id="L129">        String pattern = &quot;TE&quot;;</span>
+<span class="fc" id="L130">        String replace = &quot;BA&quot;;</span>
+<span class="fc" id="L131">        char delimiter = '\\';</span>
+<span class="fc" id="L132">        boolean inside = true;</span>
+<span class="fc" id="L133">        String output = stringutils.replaceString(input, pattern, replace, delimiter, inside);</span>
+<span class="fc" id="L134">        String expected = &quot;\\#THIS #BAST# CASE\\#&quot;;</span>
+        //System.out.print(output);
+<span class="fc" id="L136">        boolean ans = output.equals(expected);</span>
+<span class="fc" id="L137">        assertEquals(ans, true);</span>
+<span class="fc" id="L138">    }</span>
+
+    //categories: input: non empty
+    //pattern: single chars, present in input multiple times is one region
+    //replace: multiple
+    //delimeter: special char
+    //Multiple replaces within the same region
+    @Test
+    public void testitf10() {
+<span class="fc" id="L147">        StringUtils stringutils = new StringUtils();</span>
+<span class="fc" id="L148">        String input = &quot;THIS #IS IN #TEST CASE&quot;;</span>
+<span class="fc" id="L149">        String pattern = &quot;I&quot;;</span>
+<span class="fc" id="L150">        String replace = &quot;ABC&quot;;</span>
+<span class="fc" id="L151">        char delimiter = '#';</span>
+<span class="fc" id="L152">        boolean inside = true;</span>
+<span class="fc" id="L153">        String output = stringutils.replaceString(input, pattern, replace, delimiter, inside);</span>
+<span class="fc" id="L154">        String expected = &quot;THIS #ABCS ABCN #TEST CASE&quot;;</span>
+        //System.out.print(output);
+<span class="fc" id="L156">        boolean ans = output.equals(expected);</span>
+<span class="fc" id="L157">        assertEquals(ans, true);</span>
+<span class="fc" id="L158">    }</span>
+
+    //categories: input: non empty
+    //pattern: multiple chars, present in input multiple times is multiple region
+    //replace: multiple
+    //delimeter: special char
+    //Multiple replaces within Multiple region
+    @Test
+    public void testitf11() {
+<span class="fc" id="L167">        StringUtils stringutils = new StringUtils();</span>
+<span class="fc" id="L168">        String input = &quot;THIS #IS IN# TEST #IS IM# CASE&quot;;</span>
+<span class="fc" id="L169">        String pattern = &quot;I&quot;;</span>
+<span class="fc" id="L170">        String replace = &quot;ABC&quot;;</span>
+<span class="fc" id="L171">        char delimiter = '#';</span>
+<span class="fc" id="L172">        boolean inside = true;</span>
+<span class="fc" id="L173">        String output = stringutils.replaceString(input, pattern, replace, delimiter, inside);</span>
+<span class="fc" id="L174">        String expected = &quot;THIS #ABCS ABCN# TEST #ABCS ABCM# CASE&quot;;</span>
+        //System.out.print(output);
+<span class="fc" id="L176">        boolean ans = output.equals(expected);</span>
+<span class="fc" id="L177">        assertEquals(ans, true);</span>
+<span class="fc" id="L178">    }</span>
+
+    //categories: input: non empty
+    //pattern: multiple chars
+    //replace: multiple
+    //delimeter: alphabet
+
+    @Test
+    public void testitf14() {
+<span class="fc" id="L187">        StringUtils stringutils = new StringUtils();</span>
+<span class="fc" id="L188">        String input = &quot;THIS aIS THEa TEST CASE&quot;;</span>
+<span class="fc" id="L189">        String pattern = &quot;IS&quot;;</span>
+<span class="fc" id="L190">        String replace = &quot;ABC&quot;;</span>
+<span class="fc" id="L191">        char delimiter = 'a';</span>
+<span class="fc" id="L192">        boolean inside = true;</span>
+<span class="fc" id="L193">        String output = stringutils.replaceString(input, pattern, replace, delimiter, inside);</span>
+<span class="fc" id="L194">        String expected = &quot;THIS aABC THEa TEST CASE&quot;;</span>
+        //System.out.print(output);
+<span class="fc" id="L196">        boolean ans = output.equals(expected);</span>
+<span class="fc" id="L197">        assertEquals(ans, true);</span>
+<span class="fc" id="L198">    }</span>
+
+    //categories: input: non empty
+    //pattern: multiple chars
+    //replace: multiple
+    //delimeter: number
+
+    @Test
+    public void testitf15() {
+<span class="fc" id="L207">        StringUtils stringutils = new StringUtils();</span>
+<span class="fc" id="L208">        String input = &quot;THIS 1IS THE1 TEST CASE&quot;;</span>
+<span class="fc" id="L209">        String pattern = &quot;IS&quot;;</span>
+<span class="fc" id="L210">        String replace = &quot;ABC&quot;;</span>
+<span class="fc" id="L211">        char delimiter = '1';</span>
+<span class="fc" id="L212">        boolean inside = true;</span>
+<span class="fc" id="L213">        String output = stringutils.replaceString(input, pattern, replace, delimiter, inside);</span>
+<span class="fc" id="L214">        String expected = &quot;THIS 1ABC THE1 TEST CASE&quot;;</span>
+        //System.out.print(output);
+<span class="fc" id="L216">        boolean ans = output.equals(expected);</span>
+<span class="fc" id="L217">        assertEquals(ans, true);</span>
+<span class="fc" id="L218">    }</span>
+
+    @Test
+    public void testitf16() {
+<span class="fc" id="L222">        StringUtils stringutils = new StringUtils();</span>
+<span class="fc" id="L223">        String input = &quot;QUICK asd BROWN asd FOX asd JUMPED asd OVER THE YELLOW DOG&quot;;</span>
+<span class="fc" id="L224">        String pattern = &quot;asd&quot;;</span>
+<span class="fc" id="L225">        String replace = &quot;qwe&quot;;</span>
+<span class="fc" id="L226">        char delimiter = '1';</span>
+<span class="fc" id="L227">        boolean inside = false;</span>
+<span class="fc" id="L228">        String output = stringutils.replaceString(input, pattern, replace, delimiter, inside);</span>
+<span class="fc" id="L229">        String expected = &quot;QUICK qwe BROWN qwe FOX qwe JUMPED qwe OVER THE YELLOW DOG&quot;;</span>
+        //System.out.print(output);
+<span class="fc" id="L231">        boolean ans = output.equals(expected);</span>
+<span class="fc" id="L232">        assertEquals(ans, true);</span>
+<span class="fc" id="L233">    }</span>
+
+
+    //categories: input: 3 atomic regions
+    //pattern: single chars
+    //replace: multiple
+    //delimeter: special char
+
+    @Test
+    public void testitf17() {
+<span class="fc" id="L243">        StringUtils stringutils = new StringUtils();</span>
+<span class="fc" id="L244">        String input = &quot;THE #QUICK# BR#OWN FOX IS CL#E#VER I#N FORREST&quot;;</span>
+<span class="fc" id="L245">        String pattern = &quot;I&quot;;</span>
+<span class="fc" id="L246">        String replace = &quot;ABC&quot;;</span>
+<span class="fc" id="L247">        char delimiter = '#';</span>
+<span class="fc" id="L248">        boolean inside = true;</span>
+<span class="fc" id="L249">        String output = stringutils.replaceString(input, pattern, replace, delimiter, inside);</span>
+<span class="fc" id="L250">        String expected = &quot;THE #QUABCCK# BR#OWN FOX ABCS CL#E#VER ABC#N FORREST&quot;;</span>
+        //System.out.print(output);
+<span class="fc" id="L252">        boolean ans = output.equals(expected);</span>
+<span class="fc" id="L253">        assertEquals(ans, true);</span>
+<span class="fc" id="L254">    }</span>
+
+    @Test
+    public void testitf18() {
+<span class="fc" id="L258">        StringUtils stringutils = new StringUtils();</span>
+<span class="fc" id="L259">        String input = &quot;#THIS IS TEST# #IS # TEST CASE#&quot;;</span>
+<span class="fc" id="L260">        String pattern = &quot;TE&quot;;</span>
+<span class="fc" id="L261">        String replace = &quot;BE&quot;;</span>
+<span class="fc" id="L262">        char delimiter = '#';</span>
+<span class="fc" id="L263">        boolean inside = true;</span>
+<span class="fc" id="L264">        String output = stringutils.replaceString(input, pattern, replace, delimiter, inside);</span>
+<span class="fc" id="L265">        String expected = &quot;#THIS IS BEST# #IS # TEST CASE#&quot;;</span>
+        //System.out.print(output);
+<span class="fc" id="L267">        boolean ans = output.equals(expected);</span>
+<span class="fc" id="L268">        assertEquals(ans, true);</span>
+
+<span class="fc" id="L270">    }</span>
+
+    //inside set to false, pattern found outside atomic region
+    @Test
+    public void testitf19() {
+<span class="fc" id="L275">        StringUtils stringutils = new StringUtils();</span>
+<span class="fc" id="L276">        String input = &quot;THIS IS TEST# IS # TEST CASE&quot;;</span>
+<span class="fc" id="L277">        String pattern = &quot;TE&quot;;</span>
+<span class="fc" id="L278">        String replace = &quot;BE&quot;;</span>
+<span class="fc" id="L279">        char delimiter = '#';</span>
+<span class="fc" id="L280">        boolean inside = false;</span>
+<span class="fc" id="L281">        String output = stringutils.replaceString(input, pattern, replace, delimiter, inside);</span>
+<span class="fc" id="L282">        String expected = &quot;THIS IS BEST# IS # BEST CASE&quot;;</span>
+        //System.out.print(output);
+<span class="fc" id="L284">        boolean ans = output.equals(expected);</span>
+<span class="fc" id="L285">        assertEquals(ans, true);</span>
+
+<span class="fc" id="L287">    }</span>
+
+    //inside set to false, one pattern found outside atomic region one inside
+    @Test
+    public void testitf20() {
+<span class="fc" id="L292">        StringUtils stringutils = new StringUtils();</span>
+<span class="fc" id="L293">        String input = &quot;THIS IS TEST# IS # #TEST# CASE&quot;;</span>
+<span class="fc" id="L294">        String pattern = &quot;TE&quot;;</span>
+<span class="fc" id="L295">        String replace = &quot;BE&quot;;</span>
+<span class="fc" id="L296">        char delimiter = '#';</span>
+<span class="fc" id="L297">        boolean inside = false;</span>
+<span class="fc" id="L298">        String output = stringutils.replaceString(input, pattern, replace, delimiter, inside);</span>
+<span class="fc" id="L299">        String expected = &quot;THIS IS BEST# IS # #TEST# CASE&quot;;</span>
+        //System.out.print(output);
+<span class="fc" id="L301">        boolean ans = output.equals(expected);</span>
+<span class="fc" id="L302">        assertEquals(ans, true);</span>
+
+<span class="fc" id="L304">    }</span>
+
+    //pattern bigger than input
+    @Test
+    public void testitf13() {
+<span class="fc" id="L309">        StringUtils stringutils = new StringUtils();</span>
+<span class="fc" id="L310">        String input = &quot;#TEST#&quot;;</span>
+<span class="fc" id="L311">        String pattern = &quot;TESTIS&quot;;</span>
+<span class="fc" id="L312">        String replace = &quot;ABC&quot;;</span>
+<span class="fc" id="L313">        char delimiter = '#';</span>
+<span class="fc" id="L314">        boolean inside = true;</span>
+<span class="fc" id="L315">        String output = stringutils.replaceString(input, pattern, replace, delimiter, inside);</span>
+<span class="fc" id="L316">        String expected = &quot;#TEST#&quot;;</span>
+        //System.out.print(output);
+<span class="fc" id="L318">        boolean ans = output.equals(expected);</span>
+<span class="fc" id="L319">        assertEquals(ans, true);</span>
+<span class="fc" id="L320">    }</span>
+
+    //        boolean inside = false;
+//        char delimiter = '#';
+//        String replace = &quot;BE&quot;;
+//        String pattern = &quot;TE&quot;;
+//        String input = &quot;TEST CASE&quot;;
+//        StringUtils stringutils = new StringUtils();
+//    public void testitf1() {
+//    }
+//
+//        assertEquals(ans , true);
+//        boolean ans = output.equals(expected);
+//        String expected = &quot;BEST CASE&quot;;
+//        String output = stringutils.replaceString(input, pattern, replace, delimiter, inside);
+//        boolean inside = false;
+//        char delimiter = '#';
+//        String replace = &quot;BE&quot;;
+//        String pattern = &quot;TE&quot;;
+//        String input = &quot;TEST CASE&quot;;
+//        StringUtils stringutils = new StringUtils();
+//    public void testitf1() {
+//    }
+//
+//        assertEquals(ans , true);
+//        boolean ans = output.equals(expected);
+//        String expected = &quot;BEST CASE&quot;;
+//        String output = stringutils.replaceString(input, pattern, replace, delimiter, inside);
+//        boolean inside = false;
+//        char delimiter = '#';
+//        String replace = &quot;BE&quot;;
+//        String pattern = &quot;TE&quot;;
+//        String input = &quot;TEST CASE&quot;;
+//        StringUtils stringutils = new StringUtils();
+//    }
+//
+//        assertEquals(ans , true);
+//        boolean ans = output.equals(expected);
+//        //System.out.print(output);
+//        String expected = &quot;THIS #IS TEST# CASE&quot;;
+//        String output = stringutils.replaceString(input, pattern, replace, delimiter, inside);
+//        boolean inside = true;
+//        char delimiter = '#';
+//        String replace = &quot;BE&quot;;
+//        String pattern = &quot;XYZ&quot;;
+//        String input = &quot;THIS #IS TEST# CASE&quot;;
+//        StringUtils stringutils = new StringUtils();
+//
+// public void testitf3() {
+//    @Test
+//    //patter does not exist in input
+//    //TODO: REMOVE
+//    }
+//
+//        assertEquals(ans , true);
+//        boolean ans = output.equals(expected);
+//        String expected = &quot;THIS #IS TEST# CASE&quot;;
+//        String output = stringutils.replaceString(input, pattern, replace, delimiter, inside);
+//        boolean inside = true;
+//        char delimiter = '#';
+//        String replace = &quot;BE&quot;;
+//        String pattern = &quot;&quot;;
+//        String input = &quot;THIS #IS TEST# CASE&quot;;
+//        StringUtils stringutils = new StringUtils();
+//    public void testitf2() {
+//    @Test
+//    //delimeter: special char
+//    //replace: multiple
+//    //pattern empty
+//    //categories: input: non empty with one atomic region
+//categories: input: non empty, one atomic region
+//pattern: multiple chars,present
+//replace: multiple
+//delimeter: alphabet
+//Multiple replaces within the same region
+//Multiple replaces within Multiple region
+
+
+    //Multiple occurence of pattern in input string. pattern in no regions
+    @Test
+    public void testitf5() {
+<span class="fc" id="L401">        StringUtils stringutils = new StringUtils();</span>
+<span class="fc" id="L402">        String input = &quot;THIS #THE# TEST #THE# CASE&quot;;</span>
+<span class="fc" id="L403">        String pattern = &quot;I&quot;;</span>
+<span class="fc" id="L404">        String replace = &quot;XYZ&quot;;</span>
+<span class="fc" id="L405">        char delimiter = '#';</span>
+<span class="fc" id="L406">        boolean inside = true;</span>
+<span class="fc" id="L407">        String output = stringutils.replaceString(input, pattern, replace, delimiter, inside);</span>
+<span class="fc" id="L408">        String expected = &quot;THIS #THE# TEST #THE# CASE&quot;;</span>
+        //System.out.print(output);
+<span class="fc" id="L410">        boolean ans = output.equals(expected);</span>
+<span class="fc" id="L411">        assertEquals(ans , true);</span>
+
+<span class="fc" id="L413">    }</span>
+    //categories: input: non empty with multiple atomic region
+    //pattern single char, present in one region
+    //replace: multiple
+    //delimeter: special char
+    //Multiple occurence of pattern in input string. pattern in one regions
+
+
+    //pattern only found outside atomic area
+    @Test
+    public void testitf12() {
+<span class="fc" id="L424">        StringUtils stringutils = new StringUtils();</span>
+<span class="fc" id="L425">        String input = &quot;THIS #IS# TEST CASE&quot;;</span>
+<span class="fc" id="L426">        String pattern = &quot;ST&quot;;</span>
+<span class="fc" id="L427">        String replace = &quot;ABC&quot;;</span>
+<span class="fc" id="L428">        char delimiter = '#';</span>
+<span class="fc" id="L429">        boolean inside = true;</span>
+<span class="fc" id="L430">        String output = stringutils.replaceString(input, pattern, replace, delimiter, inside);</span>
+<span class="fc" id="L431">        String expected = &quot;THIS #IS# TEST CASE&quot;;</span>
+        //System.out.print(output);
+<span class="fc" id="L433">        boolean ans = output.equals(expected);</span>
+<span class="fc" id="L434">        assertEquals(ans, true);</span>
+<span class="fc" id="L435">    }</span>
+
+    //empty pattern
+    @Test
+    public void testitf21() {
+<span class="fc" id="L440">        StringUtils stringutils = new StringUtils();</span>
+<span class="fc" id="L441">        String input = &quot;THIS #IS# TEST CASE&quot;;</span>
+<span class="fc" id="L442">        String pattern = &quot;&quot;;</span>
+<span class="fc" id="L443">        String replace = &quot;ABC&quot;;</span>
+<span class="fc" id="L444">        char delimiter = ' ';</span>
+<span class="fc" id="L445">        boolean inside = true;</span>
+<span class="fc" id="L446">        String output = stringutils.replaceString(input, pattern, replace, delimiter, inside);</span>
+<span class="fc" id="L447">        String expected = &quot;THIS #IS# TEST CASE&quot;;</span>
+        //System.out.print(output);
+<span class="fc" id="L449">        boolean ans = output.equals(expected);</span>
+<span class="fc" id="L450">        assertEquals(ans, true);</span>
+<span class="fc" id="L451">    }</span>
+
+    //empty input text and pattern
+    @Test
+    public void testitf22() {
+<span class="fc" id="L456">        StringUtils stringutils = new StringUtils();</span>
+<span class="fc" id="L457">        String input = &quot;&quot;;</span>
+<span class="fc" id="L458">        String pattern = &quot;&quot;;</span>
+<span class="fc" id="L459">        String replace = null;</span>
+<span class="fc" id="L460">        char delimiter = ' ';</span>
+<span class="fc" id="L461">        boolean inside = true;</span>
+<span class="fc" id="L462">        String output = stringutils.replaceString(input, pattern, replace, delimiter, inside);</span>
+<span class="fc" id="L463">        String expected = &quot;&quot;;</span>
+        //System.out.print(output);
+<span class="fc" id="L465">        boolean ans = output.equals(expected);</span>
+<span class="fc" id="L466">        assertEquals(ans, true);</span>
+<span class="fc" id="L467">    }</span>
+
+    @Test
+    public void testitf23() {
+<span class="fc" id="L471">        StringUtils stringutils = new StringUtils();</span>
+<span class="fc" id="L472">        String input = &quot;Thi\\s is t\\\\he pattern strin\\\\\\g&quot;;</span>
+<span class="fc" id="L473">        String pattern = &quot;This is t\\he pattern strin\\g&quot;;</span>
+<span class="fc" id="L474">        String replace = null;</span>
+<span class="fc" id="L475">        char delimiter = '\\';</span>
+<span class="fc" id="L476">        boolean inside = true;</span>
+<span class="fc" id="L477">        String output = stringutils.replaceString(input, pattern, replace, delimiter, inside);</span>
+<span class="fc" id="L478">        String expected = &quot;This is t\\he pattern strin\\g&quot;;</span>
+        //System.out.print(output);
+<span class="fc" id="L480">        boolean ans = output.equals(expected);</span>
+<span class="nc" id="L481">        assertEquals(ans, true);</span>
+<span class="nc" id="L482">    }</span>
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span>StringUtilsTest (21-Mar-2016 20:02:40)</div></body></html>
